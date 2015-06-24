@@ -1,0 +1,10 @@
+{
+    "name": "slack-console",
+    "description": "Add Slack integration to window.console",
+    "main": "src/slackconsole.js",
+    "version": "0.1.0",
+    "repository": {
+        "type": "git",
+        "url": "https://github.com/candrholdings/slack-console.git"
+    }
+}

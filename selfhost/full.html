@@ -1,0 +1,86 @@
+<!DOCTYPE html>
+<html lang="en-US">
+<head>
+    <meta name="viewport" content="width=device-width" />
+    <title></title>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/css/bootstrap.min.css">
+</head>
+<body>
+    <div id="reactRoot"></div>
+    <script type="text/javascript" src="https://fb.me/react-0.13.3.js"></script>
+    <script type="text/javascript" src="https://fb.me/JSXTransformer-0.13.3.js"></script>
+    <script type="text/javascript" src="https://code.jquery.com/jquery-2.1.1.min.js"></script>
+    <script type="text/javascript" src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/js/bootstrap.min.js"></script>
+    <script type="text/javascript" src="../src/slackconsole.js"></script>
+    <script type="text/jsx">
+    !function (React, SlackConsole) {
+        'use strict';
+
+        var SlackBox = React.createClass({
+            propTypes: {
+                token: React.PropTypes.string
+            },
+            getInitialState: function () {
+                return {
+                    text: '',
+                    type: 'log'
+                };
+            },
+            onChange: function (evt) {
+                this.setState({ text: evt.target.value });
+            },
+            onSubmit: function (evt) {
+                evt.preventDefault();
+
+                var that = this;
+
+                SlackConsole.set('token', that.props.token);
+                SlackConsole.set('channel', '#bugme');
+
+                console[that.state.type].call(console, that.state.text);
+
+                that.setState({ text: '' });
+
+                React.findDOMNode(that.refs.input).focus();
+            },
+            onTypeChange: function (type) {
+                this.setState({ type: type });
+            },
+            componentDidMount: function () {
+                React.findDOMNode(this.refs.input).focus();
+            },
+            render: function () {
+                return (
+                    <form className="form-inline" onSubmit={this.onSubmit}>
+                        <div className="form-group">
+                            <input type="textbox" ref="input" className="form-control" onChange={this.onChange} value={this.state.text} required={true} />
+                        </div>
+                        <div className="form-group">
+                            <div className="btn-group">
+                                <button type="button" className="btn btn-default dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                    {this.state.type} <span className="caret" />
+                                </button>
+                                <ul className="dropdown-menu">
+                                    <li><a href="#" onClick={this.onTypeChange.bind(this, 'info')}>info</a></li>
+                                    <li><a href="#" onClick={this.onTypeChange.bind(this, 'log')}>log</a></li>
+                                    <li><a href="#" onClick={this.onTypeChange.bind(this, 'warn')}>warn</a></li>
+                                    <li><a href="#" onClick={this.onTypeChange.bind(this, 'error')}>error</a></li>
+                                </ul>
+                            </div>
+                        </div>
+                        <button type="submit" className="btn btn-default">Send</button>
+                    </form>
+                );
+            }
+        });
+
+        React.render(
+            <SlackBox token="xoxb-...-..." />,
+            document.getElementById('reactRoot')
+        );
+
+        SlackConsole.hijack();
+    }(window.React, window.SlackConsole);
+    </script>
+</body>
+</html>
