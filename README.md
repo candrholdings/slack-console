@@ -2,7 +2,7 @@
 Slack integration for browser console
 
 ## Background
-Integrate Slack into console.log/info/error/warn. So all console log to the browser will be redirected to a specific channel/group on Slack.
+Integrate Slack into `console.log`/`info`/`error`/`warn`. So all console log to the browser will be redirected to a specific channel/group on Slack.
 
 ## Usage
 Include `src/slackconsole.js` into your site or app.
