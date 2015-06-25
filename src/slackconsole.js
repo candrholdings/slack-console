@@ -92,10 +92,19 @@
         CONSOLE_COMMANDS.forEach(function (command) {
             var oldFn = oldConsole[command].bind(oldConsole);
 
-            oldConsole[command] = function () {
+            oldConsole[command] = function (arg0) {
                 oldFn.apply(oldConsole, arguments);
-                SlackConsole[command].apply(SlackConsole, arguments);
+
+                if (arg0 instanceof Error) {
+                    SlackConsole[command].apply(SlackConsole, 'Exception `' + arg0.message + '`\n```' + arg0.stack + '```');
+                } else {
+                    SlackConsole[command].apply(SlackConsole, arguments);
+                }
             };
+        });
+
+        window.addEventListener('error', function (err) {
+            (err = err.error) && SlackConsole.error('Uncaught exception `' + err.message + '`\n```' + err.stack + '```');
         });
     };
 }();
