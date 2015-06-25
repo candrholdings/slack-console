@@ -9,12 +9,14 @@
             that.options = options;
         },
         CONSOLE_COMMANDS = [
+            'debug',
             'info',
             'log',
             'warn',
             'error'
         ],
         EMOJICONS = {
+            debug: 'bug',
             info: 'notes',
             warn: 'warning',
             error: 'exclamation'
